@@ -92,7 +92,7 @@ auth_addrs server --port 5555 --secret-key 7aec1be6514b6...
 The client node now checks all given servers for the secret message:
 
 ```
-auth_addrs client --port 1234 --public-key 1d749d4d localhost:3333 localhost:4444 localhost:5555
+auth_addrs client --port 1234 --wait --public-key 1d749d4d localhost:3333 localhost:4444 localhost:5555
 127.0.0.1:3333
 127.0.0.1:5555
 ```
