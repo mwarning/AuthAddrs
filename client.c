@@ -199,7 +199,7 @@ int client( int argc, char **argv )
 	struct Task *task;
 	int round;
 	int verified_addresses;
-	int fd, rc, done;
+	int fd, rc, all_done;
 	fd_set fds;
 	struct timeval tv;
 	time_t until;
@@ -228,18 +228,17 @@ int client( int argc, char **argv )
 		round++;
 
 		/* Send challenges to servers */
-		done = 1;
+		all_done = 1;
 		task = tasks;
 		while(task) {
 			if(task->done == 0) {
-				done = 0;
+				all_done = 0;
 				sendto( fd, task->m, CHALLENGE_LEN, 0, (struct sockaddr*) &task->addr, sizeof(IP) );
 			}
 			task = task->next;
 		}
 
-		if(done == 1 && gstate->wait == 0) {
-			/* All addresses have been verified successfully */
+		if(all_done == 1) {
 			break;
 		}
 
@@ -260,6 +259,9 @@ int client( int argc, char **argv )
 
 			if( receive_response(fd, public_key) == 0) {
 				verified_addresses++;
+				if( gstate->wait == 0 ) {
+					break;
+				}
 			}
 		} while(until > time(NULL) && gstate->is_running);
 	}
