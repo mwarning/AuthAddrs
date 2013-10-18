@@ -75,7 +75,7 @@ As an example we generate a new key pair.
 The keys are displayed shortened.
 
 ```
-./auth_addr gen
+./auth_addrs gen
 public key: 1d749d4d...
 secret key: 7aec1be6514b6...
 ```
@@ -84,15 +84,15 @@ Now we start two server instances with the correct secret key
 and one with a wrong key.
 
 ```
-auth_addr server --port 3333 --secret-key 7aec1be6514b6...
-auth_addr server --port 4444 --secret-key 999c1be6514b6...
-auth_addr server --port 5555 --secret-key 7aec1be6514b6...
+auth_addrs server --port 3333 --secret-key 7aec1be6514b6...
+auth_addrs server --port 4444 --secret-key 999c1be6514b6...
+auth_addrs server --port 5555 --secret-key 7aec1be6514b6...
 ```
 
 The client node now checks all given servers for the secret message:
 
 ```
-auth_addr client --port 1234 --public-key 1d749d4d localhost:3333 localhost:4444 localhost:5555
+auth_addrs client --port 1234 --public-key 1d749d4d localhost:3333 localhost:4444 localhost:5555
 127.0.0.1:3333
 127.0.0.1:5555
 ```
