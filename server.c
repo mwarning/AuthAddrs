@@ -6,6 +6,7 @@
 #include <sys/socket.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <time.h>
 
 #ifdef SODIUM
 #include <sodium.h>
@@ -18,6 +19,8 @@
 #include "main.h"
 #include "server.h"
 
+/* Limit the number of handled challenges per second */
+#define MAX_CHALLENGES_PER_SECOND 250
 
 void conf_server_init()
 {
@@ -77,7 +80,8 @@ int server( int argc, char **argv )
 	socklen_t addrlen_ret;
 	IP addr;
 	struct timeval tv;
-	int fd, rc;
+	int fd, rc, counter;
+	time_t counter_started;
 	fd_set fds;
 
 	conf_server_init();
@@ -116,7 +120,12 @@ int server( int argc, char **argv )
 	/* Set the servers public key */
 	from_hex(secret_key, gstate->secret_key, 2*crypto_sign_SECRETKEYBYTES );
 
+	counter = 0;
+	counter_started = 0;
+
 	while( gstate->is_running ) {
+		counter++;
+
 		tv.tv_sec = 1;
 		tv.tv_usec = 0;
 
@@ -133,6 +142,16 @@ int server( int argc, char **argv )
 		mlen = recvfrom( fd, m, sizeof(m), 0, (struct sockaddr *) &addr, &addrlen_ret );
 
 		if(mlen != CHALLENGE_LEN) {
+			continue;
+		}
+
+		/* Reset counter every second */
+		if(time(NULL) > counter_started) {
+			counter_started = time(NULL);
+			counter = 0;
+		}
+
+		if(counter > MAX_CHALLENGES_PER_SECOND) {
 			continue;
 		}
 
