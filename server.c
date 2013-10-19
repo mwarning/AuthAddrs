@@ -72,6 +72,7 @@ void conf_server_check()
 
 int server( int argc, char **argv )
 {
+	char addrbuf[FULL_ADDSTRLEN+1];
 	UCHAR secret_key[crypto_sign_SECRETKEYBYTES];
 	UCHAR sm[CHALLENGE_LEN+crypto_sign_BYTES];
 	UCHAR m[CHALLENGE_LEN+crypto_sign_BYTES];
@@ -156,7 +157,7 @@ int server( int argc, char **argv )
 		}
 
 		if( crypto_sign(sm, &smlen, m, mlen, secret_key) == 0) {
-			log_debug("Send reply of %llu bytes.", smlen);
+			log_debug( "Send reply of %llu bytes to %s", smlen, str_addr(&addr, addrbuf) );
 			sendto( fd, sm, smlen, 0, (struct sockaddr*) &addr, sizeof(IP) );
 		}
 	}
