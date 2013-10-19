@@ -56,7 +56,7 @@ struct Task* add_task(IP *addr) {
 	return n;
 }
 
-struct Task *find_talk(IP *addr) {
+struct Task *find_task(IP *addr) {
 	struct Task *a;
 
 	a = tasks;
@@ -114,7 +114,7 @@ void conf_client_handle( char *var, char *val )
 		}
 
 		/* Check if IP address is already in array */
-		if(find_talk(&addr) == NULL)  {
+		if(find_task(&addr) == NULL)  {
 			add_task(&addr);
 		}
 	} else if( match(var, "--public-key")) {
@@ -164,7 +164,7 @@ int receive_response(int fd, UCHAR public_key[])
 	smlen = recvfrom( fd, sm, sizeof(sm), 0, (struct sockaddr *) &addr_ret, &addrlen_ret );
 	log_debug("Received reply from %s: %d bytes.", str_addr(&addr_ret, addrbuf), smlen);
 
-	task = find_talk(&addr_ret);
+	task = find_task(&addr_ret);
 	if( task == NULL ) {
 		log_debug("Received reply from unknown address: %s", str_addr(&addr_ret, addrbuf));
 		return 1;
@@ -239,7 +239,7 @@ int client( int argc, char **argv )
 		}
 
 		if(all_done == 1) {
-			break;
+			goto end;
 		}
 
 		/* Handle replies for 1 second */
@@ -260,11 +260,13 @@ int client( int argc, char **argv )
 			if( receive_response(fd, public_key) == 0) {
 				verified_addresses++;
 				if( gstate->wait == 0 ) {
-					break;
+					goto end;
 				}
 			}
 		} while(until > time(NULL) && gstate->is_running);
 	}
+
+	end:;
 
 	if(verified_addresses > 0) {
 		return 0;
