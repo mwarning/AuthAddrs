@@ -96,6 +96,8 @@ void conf_client_check()
 
 void conf_client_handle( char *var, char *val )
 {
+	char filebuf[1024];
+	int len;
 	IP addr;
 	int rc;
 
@@ -122,8 +124,18 @@ void conf_client_handle( char *var, char *val )
 			conf_val_missing(var);
 		}
 
+		/* Assume var to be a file path */
+		if(!is_hex(val, strlen(val))) {
+			len = read_file(filebuf, sizeof(filebuf), val);
+			if( len < 0 ) {
+				log_err("Cannot read public key %s: %s", val, strerror( errno ) );
+				exit(1);
+			}
+			val = filebuf;
+		}
+
 		if(strlen(val) != (2*crypto_sign_PUBLICKEYBYTES)) {
-			log_err("Invalid public key size.");
+			log_err("Invalid secret key size of %d characters.", strlen(val));
 			exit(1);
 		}
 

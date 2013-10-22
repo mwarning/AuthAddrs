@@ -31,7 +31,7 @@ const char *usage =
 	"--port <port>		Set the port to listen for replies (Default: "DEFAULT_PORT").\n"
 	"--help, -h		Show this help text.\n"
 	"--ipv6,-6		IPv6 mode. Default is IPv4.\n"
-	"--public-key <key>	The public text.\n"
+	"--public-key <key/path>	The public key or file path.\n"
 	"--timeout <n>		Quit after n seconds (Default: 1).\n"
 	"--wait			Wait for the timeout to expire.\n"
 	"\n"
@@ -39,7 +39,7 @@ const char *usage =
 	"--port <port>		Set the port to listen for requests (Default: "DEFAULT_PORT").\n"
 	"--help, -h		Show this help text.\n"
 	"--ipv6,-6		IPv6 mode. Default is IPv4.\n"
-	"--secret-key <key>	The secret key.\n"
+	"--secret-key <key/path>	The secret key or file path.\n"
 	"--daemon		Run as daemon.\n"
 	"--user <name>		Change user when starting as daemon.\n"
 	"\n";

@@ -18,7 +18,7 @@ typedef struct sockaddr_in IP4;
 typedef unsigned int UINT;
 typedef unsigned char UCHAR;
 
-
+int read_file( char buf[], int buflen, const char *path );
 void randombytes(UCHAR buffer[], unsigned long long size);
 
 int is_hex( const char string[], size_t size );

@@ -21,6 +21,26 @@
 #include "utils.h"
 
 
+int read_file( char buf[], int buflen, const char *path ) {
+	size_t len;
+	FILE *file;
+
+	file = fopen( path, "r" );
+	if( file == NULL ) {
+		return -1;
+	}
+
+	len = fread( buf, 1, buflen - 1, file );
+	fclose( file );
+
+	if( len < 0 || len >= buflen ) {
+		return -1;
+	}
+
+	buf[len] = '\0';
+	return len;
+}
+
 void randombytes(UCHAR buffer[], unsigned long long size)
 {
 	int fd;

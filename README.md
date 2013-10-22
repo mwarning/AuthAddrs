@@ -28,8 +28,8 @@ Usage: `auth_addr` client [arguments] -s *secret* [addresses]
   * `--ipv6,-6`  
     IPv6 mode. Default is IPv4.
 
-  * `--public-key` *key*  
-    The public key.
+  * `--public-key` *key/file*  
+    The public key or a file.
 
   * `--verbosity` *level*  
     Verbosity level: quiet, verbose or debug.  
@@ -54,8 +54,8 @@ Usage: `auth_addr` server [arguments] -s *secret*
   * `--ipv6,-6`  
     IPv6 mode. Default is IPv4.
 
-  * `--secret-key` *key*  
-    The secret key.
+  * `--secret-key` *key/file*  
+    The secret key or a file.
 
   * `--verbosity` *level*  
     Verbosity level: quiet, verbose or debug  

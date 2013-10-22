@@ -29,6 +29,9 @@ void conf_server_init()
 
 void conf_server_handle( char *var, char *val )
 {
+	char filebuf[1024];
+	int len;
+
 	if(conf_handle(var, val) == 0) {
 		/* Nothing to do */
 	} else if( match(var, "--daemon")) {
@@ -43,8 +46,18 @@ void conf_server_handle( char *var, char *val )
 			conf_val_missing(var);
 		}
 
+		/* Assume var to be a file path */
+		if(!is_hex(val, strlen(val))) {
+			len = read_file(filebuf, sizeof(filebuf), val);
+			if( len < 0 ) {
+				log_err("Cannot read secret key '%s': %s", val, strerror( errno ) );
+				exit(1);
+			}
+			val = filebuf;
+		}
+
 		if(strlen(val) != (2*crypto_sign_SECRETKEYBYTES)) {
-			log_err("Invalid secret key size.");
+			log_err("Invalid secret key size of %d characters.", strlen(val));
 			exit(1);
 		}
 
@@ -142,7 +155,8 @@ int server( int argc, char **argv )
 		addrlen_ret = sizeof(IP);
 		mlen = recvfrom( fd, m, sizeof(m), 0, (struct sockaddr *) &addr, &addrlen_ret );
 
-		if(mlen != CHALLENGE_LEN) {
+		/* Check if the challenge is too long */
+		if(mlen > CHALLENGE_LEN) {
 			continue;
 		}
 
@@ -152,10 +166,12 @@ int server( int argc, char **argv )
 			counter = 0;
 		}
 
+		/* Too many challenges */
 		if(counter > MAX_CHALLENGES_PER_SECOND) {
 			continue;
 		}
 
+		/* Solve the challenge */
 		if( crypto_sign(sm, &smlen, m, mlen, secret_key) == 0) {
 			log_debug( "Send reply of %llu bytes to %s", smlen, str_addr(&addr, addrbuf) );
 			sendto( fd, sm, smlen, 0, (struct sockaddr*) &addr, sizeof(IP) );
