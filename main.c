@@ -42,6 +42,7 @@ const char *usage =
 	"--secret-key <key/path>	The secret key or file path.\n"
 	"--daemon		Run as daemon.\n"
 	"--user <name>		Change user when starting as daemon.\n"
+	"--max-requests <num>	Maximum number of requests per second to handle (Default: 250).\n"
 	"\n";
 
 void conf_init(int is_server)
@@ -56,6 +57,7 @@ void conf_init(int is_server)
 
 	/* Server only */
 	gstate->secret_key = NULL;
+	gstate->max_requests = 250;
 
 	/* Client only */
 	gstate->public_key = NULL;

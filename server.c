@@ -19,8 +19,6 @@
 #include "main.h"
 #include "server.h"
 
-/* Limit the number of handled challenges per second */
-#define MAX_CHALLENGES_PER_SECOND 250
 
 void conf_server_init()
 {
@@ -41,6 +39,11 @@ void conf_server_handle( char *var, char *val )
 			conf_val_missing(var);
 		}
 		gstate->user = strdup(val);
+	} else if( match(var, "--max-requests")) {
+		if(val == NULL) {
+			conf_val_missing(var);
+		}
+		gstate->max_requests = atoi(val);
 	} else if( match(var, "--secret-key")) {
 		if(val == NULL) {
 			conf_val_missing(var);
@@ -167,7 +170,7 @@ int server( int argc, char **argv )
 		}
 
 		/* Too many challenges */
-		if(counter > MAX_CHALLENGES_PER_SECOND) {
+		if(counter > gstate->max_requests) {
 			continue;
 		}
 

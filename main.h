@@ -30,6 +30,7 @@ typedef struct {
 
 	/* Server only */
 	const char *secret_key;
+	int max_requests; /* Requests to handle per second */
 
 	/* Client only */
 	const char *public_key;
