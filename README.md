@@ -4,7 +4,9 @@ AuthAddrs
 ## DESCRIPTION
 
 AuthAddrs filters a list of addresses for nodes that can solve
-a specific cryptographic challenge.
+a specific cryptographic challenge. By default, AuthAddrs
+exits after one verified IP address will be printed out or after
+the timeout is reached.
 
 Authentication is done via a public/secret key system
 implemented by the [libnacl](http://nacl.cr.yp.to/)/[libsodium](https://github.com/jedisct1/libsodium) library.
@@ -97,3 +99,7 @@ auth_addrs client --port 1234 --wait --public-key 1d749d4d... localhost:3333 loc
 ```
 
 As you can see, only two instances have the correct secret key.
+
+## LICENSE
+
+  GPLv3
