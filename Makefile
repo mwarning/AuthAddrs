@@ -8,10 +8,10 @@ BIN = auth_addrs
 default: sodium
 
 sodium:
-	$(CC) $(CFLAGS) $(LFLAGS) -DSODIUM -lsodium $(SRCS) -o $(BIN)
+	$(CC) $(CFLAGS) $(LFLAGS) -DSODIUM $(SRCS) -o $(BIN) -lsodium
 
 nacl:
-	$(CC) $(CFLAGS) $(LFLAGS) /usr/lib/libnacl.a $(SRCS) -o $(BIN)
+	$(CC) $(CFLAGS) $(LFLAGS) $(SRCS) -o $(BIN) -lnacl
 
 install:
 	-strip $(BIN)
