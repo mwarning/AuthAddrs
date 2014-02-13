@@ -30,7 +30,7 @@ secret key: ce75e6ec974f29462bd4bd255f7eac2f4a51d214eb4503d939ade2fd757fab60bea1
     Node at 192.168.1.5
     ```$./auth_addrs server --secret-key ce75e6ec974f29462bd4bd255f7eac2f4a51d214eb4503d939ade2fd757fab60bea123645d036aa9eddd745d5c87d0e328b28f9a1eb8d86e86ce360e2fabfaaa```
 
-    Node at 192.168.8 (but using the wrong secret)
+    Node at 192.168.1.8 (but using the wrong secret)
     ```$./auth_addrs server --secret-key aaaae6ec974f29462bd4bd255f7eac2f4a51d214eb4503d939ade2fd757fab60bea123645d036aa9eddd745d5c87d0e328b28f9a1eb8d86e86ce360e2fabfaaa```
 
 3. Start client with public key and all potential address
