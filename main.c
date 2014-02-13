@@ -77,7 +77,7 @@ void conf_val_not_missing(const char* var)
 	exit(1);
 }
 
-int conf_handle( char *var, char *val )
+int conf_main_parse( char *var, char *val )
 {
 	if( match(var, "--port")) {
 		if(val == NULL) {

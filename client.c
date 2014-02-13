@@ -94,14 +94,14 @@ void conf_client_check()
 	}
 }
 
-void conf_client_handle( char *var, char *val )
+void conf_client_parse( char *var, char *val )
 {
 	char filebuf[1024];
 	int len;
 	IP addr;
 	int rc;
 
-	if(conf_handle(var, val) == 0) {
+	if(conf_main_parse(var, val) == 0) {
 		/* Nothing to do */
 	} else if( var == NULL) {
 		rc = addr_parse_full( &addr, val, DEFAULT_PORT, gstate->af );
@@ -217,7 +217,7 @@ int client( int argc, char **argv )
 	time_t until;
 
 	conf_client_init();
-	conf_load(argc, argv, conf_client_handle);
+	conf_load(argc, argv, conf_client_parse);
 	conf_client_check();
 
 	fd = net_bind((gstate->af == AF_INET) ? "0.0.0.0" : "::0", gstate->port, NULL, IPPROTO_UDP, gstate->af);

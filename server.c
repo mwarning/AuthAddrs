@@ -25,12 +25,12 @@ void conf_server_init()
 	conf_init(1);
 }
 
-void conf_server_handle( char *var, char *val )
+void conf_server_parse( char *var, char *val )
 {
 	char filebuf[1024];
 	int len;
 
-	if(conf_handle(var, val) == 0) {
+	if(conf_main_parse(var, val) == 0) {
 		/* Nothing to do */
 	} else if( match(var, "--daemon")) {
 		gstate->is_daemon = 1;
@@ -102,7 +102,7 @@ int server( int argc, char **argv )
 	fd_set fds;
 
 	conf_server_init();
-	conf_load(argc, argv, conf_server_handle);
+	conf_load(argc, argv, conf_server_parse);
 	conf_server_check();
 
 	fd = net_bind((gstate->af == AF_INET) ? "0.0.0.0" : "::0", gstate->port, NULL, IPPROTO_UDP, gstate->af);

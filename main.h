@@ -44,7 +44,7 @@ void conf_val_missing(const char* var);
 void conf_val_not_missing(const char* var);
 
 void conf_init(int is_server);
-int conf_handle( char *var, char *val );
+int conf_main_parse( char *var, char *val );
 void conf_check();
 
 #endif /* _MAIN_H_ */
